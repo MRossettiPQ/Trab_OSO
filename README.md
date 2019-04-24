@@ -1,9 +1,9 @@
 # Trab_OSO
-##################################################### Equipe ####################################################
+##################################### Equipe #################################################
 Matheus Rossetti    
 Rian Turibio
 
-############################################# Descrição do Trabalho #############################################
+############################# Descrição do Trabalho ##########################################
 DEC7556-07655 (20191) - Arquitetura de Sistemas Operacionais
 Enunciado dos trabalho
 Desenvolver um sistema de arquivos distribuídos que simula padrão EXT3. O sistema deve ser desenvolvido em C ou C++ utilizando o compilador GNU GCC e chamadas de sistemas do padrão POSIX. 
