@@ -114,6 +114,6 @@ void texto()
  		printf("4- mostrar conteúdo do diretório / ls \n");
  		printf("5- criar arquivo / nano\n");
  		printf("6- remover arquivo / rm\n");
- 		printf("7- escrever um sequência de caracteres em um arquivo / \n");
+ 		printf("7- escrever um sequência de caracteres em um arquivo / vim \n");
  		printf("8- mostrar conteúdo do arquivo / more\n\n");
 }
