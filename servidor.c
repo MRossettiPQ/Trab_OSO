@@ -109,10 +109,12 @@ void *conect(void *arg)
 		
 		}else
 		{
+			pthread_mutex_lock(&mutex);
 			printf("3- entrar em (sub)diretório / cd\n");
 			printf("Digite somente o caminho sem comando !");
 			scanf("%c", &camp);
 			chdir("camp");
+			pthread_mutex_unlock(&mutex);
 		}
 	}
 
