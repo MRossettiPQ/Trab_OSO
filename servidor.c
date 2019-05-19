@@ -82,23 +82,38 @@ void *conect(void *arg)
  
 	while (1)
 	{
-        pthread_mutex_lock(&mutex);
-		//loca os recursos para uso exclusivo do do programa
-        texto();
-		printf("*********************************************\n");
-		printf("\nExecute seu Comando:\n");
-		read(save_sockt,&msg,255);
+		int esc = 0;
+		char camp;
+        printf("Digite 1 se quer executar os comandos normais e 2 se quser torcar de pasta");
+		scanf("%d", &esc);
 
-		printf("\nSeu comando foi: ");
-		printf("%s",msg);
-		printf("\n");
+		if (esc == 1)
+		{
+			pthread_mutex_lock(&mutex);
+			//loca os recursos para uso exclusivo do do programa
+        	texto();
+			printf("*********************************************\n");
+			printf("\nExecute seu Comando:\n");
+			read(save_sockt,&msg,255);
+
+			printf("\nSeu comando foi: ");
+			printf("%s",msg);
+			printf("\n");
 		
 		//executa o comando no sistema
-		system(msg);
+			system(msg);
 		
 		//libera os recursos para outra aplicação
-		pthread_mutex_unlock(&mutex);
-		printf("\n");
+			pthread_mutex_unlock(&mutex);
+			printf("\n");
+		
+		}else
+		{
+			printf("3- entrar em (sub)diretório / cd\n");
+			printf("Digite somente o caminho sem comando !");
+			scanf("%c", &camp);
+			chdir("camp");
+		}
 	}
 
 }
@@ -110,7 +125,6 @@ void texto()
  		printf("Comandos executados:\n");
  		printf("1- criar (sub)diretório / mkdir -p\n");
  		printf("2- remover (sub)diretório / rm -rf\n");
- 		printf("3- entrar em (sub)diretório / cd\n");
  		printf("4- mostrar conteúdo do diretório / ls \n");
  		printf("5- criar arquivo / nano\n");
  		printf("6- remover arquivo / rm\n");
