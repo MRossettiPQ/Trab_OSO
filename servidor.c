@@ -84,11 +84,14 @@ void *conect(void *arg)
 	{
 		int esc = 0;
 		char camp;
+	    char cbsh = '. ./bashcd.sh';
         printf("Digite 1 se quer executar os comandos normais e 2 se quser torcar de pasta");
 		scanf("%d", &esc);
 
-		if (esc == 1)
+		switch (esc)
 		{
+		case 1 :
+
 			pthread_mutex_lock(&mutex);
 			//loca os recursos para uso exclusivo do do programa
         	texto();
@@ -107,14 +110,18 @@ void *conect(void *arg)
 			pthread_mutex_unlock(&mutex);
 			printf("\n");
 		
-		}else
-		{
+			break;
+		
+		default:
+
 			pthread_mutex_lock(&mutex);
-			printf("3- entrar em (sub)diretório / cd\n");
-			printf("Digite somente o caminho sem comando !");
-			scanf("%c", &camp);
-			chdir("camp");
+			//loca os recursos para uso exclusivo do do programa
+			system(&cbsh);
+			//chama o arquivo em bash para executar o comando cd
 			pthread_mutex_unlock(&mutex);
+			//libera os recursos para outra aplicação
+			break;
+			
 		}
 	}
 
