@@ -69,26 +69,23 @@ void *conecLeitor(void *socket_desc)
 	int read_size_2;
 	int comandoUser[2];
     char *message , client_message[2000];
-    char cbsh = ". ./bashcd.sh";
-	char *swtcError, *cmdApr, *cmdCC, *aux;
+    //char cbsh = ". ./bashcd.sh";
+	char n, m, *swtcError, *cmdApr, *cmdCC, *msgUsr;
 
-	swtcError = malloc(sizeof(char)*500);
-    cmdApr = malloc(sizeof(char)*500);
-    cmdCC = malloc(sizeof(char)*1000);
-    aux = malloc(sizeof(char)*500);
+	swtcError = malloc(sizeof(char)*500);   //Mensagem de erro
+    cmdApr = malloc(sizeof(char)*500);      //Mensagem de aprovação
+    cmdCC = malloc(sizeof(char)*500);      //Comando do Usuario
+    msgUsr = malloc(sizeof(char)*500);      //Texto enviado pelo Usuario
+
     //Texto de apresentação do sistema enviado ao cliente
     char *funcOp;
     funcOp = malloc(sizeof(char)*500);
-		funcOp = "Trabalho Arq_Sis_Op\n Comandos executados:\n 1- criar (sub)diretório / mkdir -p\n 2- remover (sub)diretório / rm -rf\n 4- mostrar conteúdo do diretório / ls \n 5- criar arquivo / nano\n 6- remover arquivo / rm\n 7- escrever um sequência de caracteres em um arquivo / vim \n8- mostrar conteúdo do arquivo / more\n\n";
+		funcOp = "Trabalho Arq_Sis_Op\n Comandos executados:\n 1- criar (sub)diretório / mkdir -p\n 2- remover (sub)diretório / rm -rf\n 4- mostrar conteúdo do diretório / ls \n 5- criar arquivo / touch\n 6- remover arquivo / rm\n 7- escrever um sequência de caracteres em um arquivo / vim \n8- mostrar conteúdo do arquivo / more\n\n";
     write(sock , funcOp , strlen(funcOp));
-
-    char n, m;
-    char LOCAL[500] = "";
 
     //Para receber mensagens dos clientes
     while((read_size_2 = recv(sock , comandoUser , 2 , 0)) > 0 )
     {
-        printf("AGORA VOCÊ ESTA NO ENDEREÇO: %s", LOCAL);
 		switch (comandoUser[0])
 		{
 			case 1:
@@ -125,14 +122,27 @@ void *conecLeitor(void *socket_desc)
 				//3- entrar em (sub)diretório / cd\n
                 pthread_mutex_lock(&mutex);
                 read(sock, client_message, 500);
-                n = sprintf(cmdCC, "cd %s", client_message);
-                system(cmdCC);
+                n = sprintf(cmdCC, "%s", client_message);
+                chdir(cmdCC);
 
-                m = sprintf(LOCAL, "%s", client_message);
+                //sprintf(cmdCC, "cd %s", client_message);
+                //sprintf(AUX, "%s", client_message);
+                printf("%s", client_message);
+                //system(cmdCC);
+                system("pwd");
+                /*
+                n = sprintf(cmdCC, "cd /mnt/c/Users/mrossettipq/Documents/GitHub/Trab_OSO/%s", client_message);
+                system(cmdCC);
+                system("pwd");
+
+                m = sprintf(aux, "%s", client_message);
+
+                printf("Usuario aqui: %s", aux);
+                */
+                
                 //Envia confirmação
                 cmdApr = "\nComando realizado com sucesso\n";
-                write(sock , LOCAL, strlen(aux));
-
+                write(sock , cmdApr , strlen(client_message));
                 //Limpa o buffer
                 memset(client_message, 0, 2000);
                 pthread_mutex_unlock(&mutex);
@@ -154,7 +164,7 @@ void *conecLeitor(void *socket_desc)
 				break;
 
 			case 5:
-				//5- criar arquivo / nano\n
+				//5- criar arquivo / touch\n
                 pthread_mutex_lock(&mutex);
                 read(sock, client_message, 500);
                 n = sprintf(cmdCC, "touch %s", client_message);
@@ -186,9 +196,33 @@ void *conecLeitor(void *socket_desc)
 			case 7:
 				//7- escrever um sequência de caracteres em um arquivo / \n
                 pthread_mutex_lock(&mutex);
+
                 read(sock, client_message, 500);
-                n = sprintf(cmdCC, "mkdir -p %s", client_message);
-                system(cmdCC);
+                n = sprintf(cmdCC, "%s ", client_message);
+                
+                read(sock, msgUsr, 500);
+                // criando a variável ponteiro para o arquivo
+                FILE *pont_arq;
+                
+                //abrindo o arquivo
+                pont_arq = fopen(cmdCC, "r");
+
+                if(pont_arq == NULL)
+                {
+                    printf("\n Não Encontrei o Arquivo");
+                    exit(EXIT_FAILURE);
+                }
+                else
+                {
+                    while((fscanf(pont_arq, "%s\n", msgUsr) != EOF))
+                    {
+
+                    }
+                }
+
+
+                // fechando arquivo
+                fclose(pont_arq);
 
                 //Envia confirmação
                 cmdApr = "\nComando realizado com sucesso\n";
