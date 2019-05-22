@@ -1,14 +1,15 @@
-#ifndef BIBLIOTECAS_H   // guardas de cabeçalho, impedem inclusões cíclicas
+#ifndef BIBLIOTECAS_H   // Guardas de cabeçalho, impedem inclusões cíclicas
     //Bibliotecas de apoio para o codigo
-    #include <strings.h>
     #include <stdio.h>
-    #include <stdlib.h>
-    #include <unistd.h>
+    #include <string.h>         //strlen
+    #include <stdlib.h>         //strlen
+    #include <unistd.h>         //write
     #include <sys/types.h>
     #include <sys/socket.h>
-    #include <sys/un.h>
+    #include <arpa/inet.h>      //inet_addr
     #include <netinet/in.h>
-    #include <pthread.h>
+    #include <netdb.h>
+    #include <pthread.h>        //for threading , link with lpthread
 
 #define BIBLIOTECAS_H
 #endif

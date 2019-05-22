@@ -1,37 +1,29 @@
-#include "bibliotecas.h"
-//união das bibliotecas
+#include "bibliotecas.h"	//União das bibliotecas
 
-void *conect(void *arg);
-void texto();
 
-pthread_mutex_t mutex;
+//Declaração função que usara thread
+void *conecLeitor(void *);
 
-int main(int argc, char **argv)
+int main(int argc , char *argv[])
 {
-	pthread_mutex_init(&mutex,NULL);
-	int sock_fd, sock_len, sock_novo, num;
-	socklen_t nock_novo_len;
-	struct sockaddr_in sock_ser, sock_cli;
-	char msg[100];
+    int socket_desc , client_sock , c;
+    struct sockaddr_in server , client;
+     
+    //Criar o socket
+    socket_desc = socket(AF_INET , SOCK_STREAM , 0);
+    if (socket_desc == -1)
+    {
+        printf("Não foi possível criar o soquete");
+    }
+    puts("Socket criado");
+
+    //Preparar o sockaddr_in em uma estrutura
+    server.sin_family = AF_INET;
+    server.sin_addr.s_addr = INADDR_ANY;
+    server.sin_port = htons(9002);
 
 	sock_fd = socket(AF_INET, SOCK_STREAM, 0); 
 	//dominio AF_INET/tipo SOCK_STREAM/ protocol == 0
-	
-	if (sock_fd < 0)
-	{
-		printf("Erro ao criar o Socket \n");
-			exit(0);
-	}
-
-	bzero((char*)&sock_ser, sizeof(sock_ser));
-	//copia os bytes, cada um com um valor de zero, em string s ??????? 
-
-	sock_ser.sin_family = AF_INET;
-	//mostra o tipo de dominio utilizado domínio local (AF_UNIX) e domínio internet (AF_INET).
-	sock_ser.sin_port=htons(9002);
-	//endereça a porta 9002 como aberta para conexão para o código
-	sock_ser.sin_addr.s_addr=INADDR_ANY;
-	//aceita qualquer IP para conexão
 
 	if (bind(sock_fd, (struct sockaddr*)&sock_ser, sizeof sock_ser) < 0)//associa um nome ao socket
 		//descritor do socket/ struckt dos parametros do socket/ tamanho em bytesda struck 
@@ -86,18 +78,16 @@ void *conect(void *arg)
 		char camp;
 	    char cbsh = '. ./bashcd.sh';
         printf("Digite 1 se quer executar os comandos normais e 2 se quser torcar de pasta");
-		scanf("%d", &esc);
-
-		switch (esc)
+		
+		switch (save_sockt)
 		{
-		case 1 :
+		case 1:
 
 			pthread_mutex_lock(&mutex);
 			//loca os recursos para uso exclusivo do do programa
         	texto();
 			printf("*********************************************\n");
 			printf("\nExecute seu Comando:\n");
-			read(save_sockt,&msg,255);
 
 			printf("\nSeu comando foi: ");
 			printf("%s",msg);
