@@ -61,6 +61,9 @@ int main(int argc , char *argv[])
 //Função para cada cliente
 void *conecLeitor(void *socket_desc)
 {
+
+    pthread_mutex_t mutex;
+
     int sock = *(int*)socket_desc;
     int read_size;
 	int read_size_2;
@@ -81,45 +84,60 @@ void *conecLeitor(void *socket_desc)
     {
 		switch (comandoUser[0])
 		{
-			case '1':
+			case 1:
 				//1- criar (sub)diretório / mkdir -p\n
+                pthread_mutex_lock(&mutex);
 				system(client_message);
+                pthread_mutex_unlock(&mutex);
 				break;
-			case '2':
+			case 2:
 				//2- remover (sub)diretório / rm -rf\n
+                pthread_mutex_lock(&mutex);
 				system(client_message);
+                pthread_mutex_unlock(&mutex);
 				break;
 
-			case '3':
+			case 3:
 				//3- entrar em (sub)diretório / cd\n
-
+                pthread_mutex_lock(&mutex);
 				//Chama o arquivo em bash para executar o comando cd
 				system(&cbsh);
+                pthread_mutex_unlock(&mutex);
 				break;
 
-			case '4':
+			case 4:
 				//4- mostrar conteúdo do diretório / ls \n"
+                pthread_mutex_lock(&mutex);
 				system(client_message);
+                pthread_mutex_unlock(&mutex);
 				break;
 
-			case '5':
+			case 5:
 				//5- criar arquivo / nano\n
+                pthread_mutex_lock(&mutex);
 				system(client_message);
+                pthread_mutex_unlock(&mutex);
 				break;
 
-			case '6':
+			case 6:
 				//6- remover arquivo / rm\n
+                pthread_mutex_lock(&mutex);
 				system(client_message);
+                pthread_mutex_unlock(&mutex);
 				break;
 
-			case '7':
+			case 7:
 				//7- escrever um sequência de caracteres em um arquivo / \n
+                pthread_mutex_lock(&mutex);
 				system(client_message);
+                pthread_mutex_unlock(&mutex);
 				break;
 			
-			case '8':
+			case 8:
 				//8- mostrar conteúdo do arquivo / more\n\n
+                pthread_mutex_lock(&mutex);
 				system(client_message);
+                pthread_mutex_unlock(&mutex);
 				break;
 
 			default:
