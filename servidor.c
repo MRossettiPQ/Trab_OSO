@@ -69,10 +69,10 @@ void *conecLeitor(void *socket_desc)
 	int read_size_2;
 	int comandoUser[1];
     char *message , client_message[2000];
-    char cbsh = '. ./bashcd.sh';
-	char *swtcError;
+    char cbsh = ". ./bashcd.sh";
+	char *swtcError, *cmdApr;
 	swtcError = malloc(sizeof(char)*500);
-
+    cmdApr = malloc(sizeof(char)*500);
     //Texto de apresentação do sistema enviado ao cliente
     char *funcOp;
     funcOp = malloc(sizeof(char)*500);
@@ -87,13 +87,33 @@ void *conecLeitor(void *socket_desc)
 			case 1:
 				//1- criar (sub)diretório / mkdir -p\n
                 pthread_mutex_lock(&mutex);
+                while(read_size = recv(sock , comandoUser , 1 , 0) > 0 )
+                {           
+                    client_message[read_size] = '\0';
+                }
 				system(client_message);
+                //Envia confirmação
+                cmdApr = "\nComando realizado com sucesso\n";
+                write(sock , cmdApr , strlen(client_message));
+                //Limpa o buffer
+                memset(client_message, 0, 2000);
+
                 pthread_mutex_unlock(&mutex);
 				break;
 			case 2:
 				//2- remover (sub)diretório / rm -rf\n
                 pthread_mutex_lock(&mutex);
+                while(read_size = recv(sock , comandoUser , 1 , 0) > 0 )
+                {           
+                    client_message[read_size] = '\0';
+                }
 				system(client_message);
+                //Envia confirmação
+                cmdApr = "\nComando realizado com sucesso\n";
+                write(sock , cmdApr , strlen(client_message));
+                //Limpa o buffer
+                memset(client_message, 0, 2000);
+
                 pthread_mutex_unlock(&mutex);
 				break;
 
@@ -102,41 +122,96 @@ void *conecLeitor(void *socket_desc)
                 pthread_mutex_lock(&mutex);
 				//Chama o arquivo em bash para executar o comando cd
 				system(&cbsh);
+                //Envia confirmação
+                cmdApr = "\nComando realizado com sucesso\n";
+                write(sock , cmdApr , strlen(client_message));
+                //Limpa o buffer
+                memset(client_message, 0, 2000);
                 pthread_mutex_unlock(&mutex);
 				break;
 
 			case 4:
 				//4- mostrar conteúdo do diretório / ls \n"
                 pthread_mutex_lock(&mutex);
+                while(read_size = recv(sock , comandoUser , 1 , 0) > 0 )
+                {           
+                    client_message[read_size] = '\0';
+                }
 				system(client_message);
+                //Envia confirmação
+                cmdApr = "\nComando realizado com sucesso\n";
+                write(sock , cmdApr , strlen(client_message));
+                //Limpa o buffer
+                memset(client_message, 0, 2000);
+
                 pthread_mutex_unlock(&mutex);
 				break;
 
 			case 5:
 				//5- criar arquivo / nano\n
                 pthread_mutex_lock(&mutex);
+                while(read_size = recv(sock , comandoUser , 1 , 0) > 0 )
+                {           
+                    client_message[read_size] = '\0';
+                }
 				system(client_message);
+                //Envia confirmação
+                cmdApr = "\nComando realizado com sucesso\n";
+                write(sock , cmdApr , strlen(client_message));
+                //Limpa o buffer
+                memset(client_message, 0, 2000);
+
                 pthread_mutex_unlock(&mutex);
 				break;
 
 			case 6:
 				//6- remover arquivo / rm\n
                 pthread_mutex_lock(&mutex);
+                while(read_size = recv(sock , comandoUser , 1 , 0) > 0 )
+                {           
+                    client_message[read_size] = '\0';
+                }
 				system(client_message);
+                //Envia confirmação
+                cmdApr = "\nComando realizado com sucesso\n";
+                write(sock , cmdApr , strlen(client_message));
+                //Limpa o buffer
+                memset(client_message, 0, 2000);
+
                 pthread_mutex_unlock(&mutex);
 				break;
 
 			case 7:
 				//7- escrever um sequência de caracteres em um arquivo / \n
                 pthread_mutex_lock(&mutex);
+                while(read_size = recv(sock , comandoUser , 1 , 0) > 0 )
+                {           
+                    client_message[read_size] = '\0';
+                }
 				system(client_message);
+                //Envia confirmação
+                cmdApr = "\nComando realizado com sucesso\n";
+                write(sock , cmdApr , strlen(client_message));
+                //Limpa o buffer
+                memset(client_message, 0, 2000);
+
                 pthread_mutex_unlock(&mutex);
 				break;
 			
 			case 8:
 				//8- mostrar conteúdo do arquivo / more\n\n
                 pthread_mutex_lock(&mutex);
+                while(read_size = recv(sock , comandoUser , 1 , 0) > 0 )
+                {           
+                    client_message[read_size] = '\0';
+                }
 				system(client_message);
+                //Envia confirmação
+                cmdApr = "\nComando realizado com sucesso\n";
+                write(sock , cmdApr , strlen(client_message));
+                //Limpa o buffer
+                memset(client_message, 0, 2000);
+
                 pthread_mutex_unlock(&mutex);
 				break;
 
