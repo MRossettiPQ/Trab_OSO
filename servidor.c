@@ -27,23 +27,21 @@ int main(int argc , char *argv[])
     server.sin_addr.s_addr = INADDR_ANY;
     server.sin_port = htons(9002);
 
-	sock_fd = socket(AF_INET, SOCK_STREAM, 0); 
-	//dominio AF_INET/tipo SOCK_STREAM/ protocol == 0
-
-	if (bind(sock_fd, (struct sockaddr*)&sock_ser, sizeof sock_ser) < 0)//associa um nome ao socket
-		//descritor do socket/ struckt dos parametros do socket/ tamanho em bytesda struck 
-	{
-		printf("Erro ao associar o nome ao socket \n");
-		exit(0);
-	}
-
-	//habilita servidor para ouvir client
-	listen(sock_fd, 5);//descritor do socket/ num max de pedidos de acesso
-
+    //Conectar com servidor
+    if(bind(socket_desc,(struct sockaddr *)&server , sizeof(server)) < 0)
+    {
+        //print the error message
+        perror("Error: Conexão falhou");
+        return 1;
+    }
+    puts("Conexão com sucesso");
+     
+    //Aguarda conexão
+    listen(socket_desc , 10);       //Numero maximo de conexões    
+    puts("Esperando por entradas das conexões");
+    c = sizeof(struct sockaddr_in);
+	pthread_t thread_id;
 	
-	pthread_t conexao;
-	//identifica o encadeamento, retorna pthread_create
-
 	while (1)
 	{
 		int sock_novo_len = sizeof(sock_cli);
@@ -70,7 +68,7 @@ void *conect(void *arg)
 	int save_sockt = *((int*) arg);
 	//
 
-	 char msg[255];
+	 char msg[499];
 	 //tamanho da mensagem enviada pelo cliente
 	
 	memset(&msg,'\0', sizeof(msg));
