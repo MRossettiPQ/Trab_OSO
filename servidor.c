@@ -27,41 +27,36 @@ int main(int argc , char *argv[])
     server.sin_addr.s_addr = INADDR_ANY;
     server.sin_port = htons(9002);
 
-	sock_fd = socket(AF_INET, SOCK_STREAM, 0); 
-	//dominio AF_INET/tipo SOCK_STREAM/ protocol == 0
-
-	if (bind(sock_fd, (struct sockaddr*)&sock_ser, sizeof sock_ser) < 0)//associa um nome ao socket
-		//descritor do socket/ struckt dos parametros do socket/ tamanho em bytesda struck 
-	{
-		printf("Erro ao associar o nome ao socket \n");
-		exit(0);
-	}
-
-	//habilita servidor para ouvir client
-	listen(sock_fd, 5);//descritor do socket/ num max de pedidos de acesso
-
+    //Conectar com servidor
+    if(bind(socket_desc,(struct sockaddr *)&server , sizeof(server)) < 0)
+    {
+        perror("Error: Conexão falhou");
+        return 1;
+    }
+    puts("Conexão com sucesso");
+     
+    //Aguarda conexão
+    listen(socket_desc , 10);       //Numero maximo de conexões    
+    puts("Esperando por entradas das conexões");
+    c = sizeof(struct sockaddr_in);
+	pthread_t thread_id;
 	
-	pthread_t conexao;
-	//identifica o encadeamento, retorna pthread_create
-
-	while (1)
-	{
-		int sock_novo_len = sizeof(sock_cli);
-		
-		//estabelece conexão entre cli/serv 
-		sock_novo = accept(sock_fd, (struct sockaddr*)&sock_cli, &sock_novo_len);
-		//descritor do socket/ end. da struckt que contem os dados de conexão do cliente/
-
-		if (sock_novo < 0)
-		{
-			printf("Erro ao conectar com o cliente \n");
-			exit(0);
-		}
-		
-		else printf("\nConectado ao Servidor !\n\n");
-		pthread_create(&conexao,NULL,conect,&sock_novo);
-		//cria a thread /thread conexão/ atributo/ rotina conexão/ argumento 
-	}
+    while((client_sock = accept(socket_desc, (struct sockaddr *)&client, (socklen_t*)&c)) )
+    {
+        puts("Conexão foi aceita!!");
+        if(pthread_create( &thread_id , NULL ,  connection_handler , (void*) &client_sock) < 0)
+        {
+            perror("Não foi possível criar a thread");
+            return 1;
+        }
+    }
+	if (client_sock < 0)
+    {
+        perror("Falhou em se conectar!!");
+        return 1;
+    }
+     
+    return 0;
 }
 
 void *conect(void *arg)
@@ -70,7 +65,7 @@ void *conect(void *arg)
 	int save_sockt = *((int*) arg);
 	//
 
-	 char msg[255];
+	 char msg[499];
 	 //tamanho da mensagem enviada pelo cliente
 	
 	memset(&msg,'\0', sizeof(msg));
