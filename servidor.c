@@ -1,4 +1,3 @@
-//TESTE DE Servidor
 /*
     Para compilar no terminal use:
     gcc servidor.c -lpthread -o servidor
@@ -65,7 +64,8 @@ void *conecLeitor(void *socket_desc)
     int sock = *(int*)socket_desc;
     int read_size;
     char *message , client_message[2000];
-    
+    char cbsh = '. ./bashcd.sh';
+
     //Texto de apresentação do sistema enviado ao cliente
     char *funcOp;
     funcOp = malloc(sizeof(char)*500);
@@ -77,6 +77,56 @@ void *conecLeitor(void *socket_desc)
     {
 		client_message[read_size] = '\0';
 		
+		switch (client_message)
+		{
+			case 1:
+				//1- criar (sub)diretório / mkdir -p\n
+				system(msg);
+				break;
+			case 2:
+				//2- remover (sub)diretório / rm -rf\n
+				system(msg);
+				break;
+
+			case 3:
+				//3- entrar em (sub)diretório / cd\n
+
+				//Chama o arquivo em bash para executar o comando cd
+				system(&cbsh);
+				break;
+
+			case 4:
+				//4- mostrar conteúdo do diretório / ls \n"
+				system(msg);
+				break;
+
+			case 5:
+				//5- criar arquivo / nano\n
+				system(msg);
+				break;
+
+			case 6:
+				//6- remover arquivo / rm\n
+				system(msg);
+				break;
+
+			case 7:
+				//7- escrever um sequência de caracteres em um arquivo / \n
+				system(msg);
+				break;
+			
+			case 8:
+				//8- mostrar conteúdo do arquivo / more\n\n
+				system(msg);
+				break;
+
+			default:
+				char *swtcError;
+				swtcError = malloc(sizeof(char)*500);
+					swtcError = "Comando invalido\n";
+				write(sock , swtcError , strlen(swtcError));
+				break;
+		}
 		//Envia mensagem para o cliente
       	write(sock , client_message , strlen(client_message));
 		
