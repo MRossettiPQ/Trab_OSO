@@ -1,2 +1,2 @@
 IP: (descobrir o da rede)
-Port: 9002
+Port: 9002TESTANDO
