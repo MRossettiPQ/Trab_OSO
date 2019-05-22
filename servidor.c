@@ -44,7 +44,7 @@ int main(int argc , char *argv[])
     while((client_sock = accept(socket_desc, (struct sockaddr *)&client, (socklen_t*)&c)) )
     {
         puts("Conexão foi aceita!!");
-        if(pthread_create( &thread_id , NULL ,  connection_handler , (void*) &client_sock) < 0)
+        if(pthread_create(&thread_id, NULL,  conecLeitor, (void*) &client_sock) < 0)
         {
             perror("Não foi possível criar a thread");
             return 1;
@@ -59,74 +59,40 @@ int main(int argc , char *argv[])
     return 0;
 }
 
-void *conect(void *arg)
+//Função para cada cliente
+void *conecLeitor(void *socket_desc)
 {
-	
-	int save_sockt = *((int*) arg);
-	//
+    int sock = *(int*)socket_desc;
+    int read_size;
+    char *message , client_message[2000];
+    
+    //Texto de apresentação do sistema enviado ao cliente
+    char *funcOp;
+    funcOp = malloc(sizeof(char)*500);
+		funcOp = "Trabalho Arq_Sis_Op\n Comandos executados:\n 1- criar (sub)diretório / mkdir -p\n 2- remover (sub)diretório / rm -rf\n 4- mostrar conteúdo do diretório / ls \n 5- criar arquivo / nano\n 6- remover arquivo / rm\n 7- escrever um sequência de caracteres em um arquivo / vim \n8- mostrar conteúdo do arquivo / more\n\n";
+    write(sock , funcOp , strlen(funcOp));
 
-	 char msg[499];
-	 //tamanho da mensagem enviada pelo cliente
-	
-	memset(&msg,'\0', sizeof(msg));
-	//preenche o bloco da memoria com um valor especifico
-	//endereço inicial da memoria/ valor a ser preenchido/ num de bte a ser preenchido
- 
-	while (1)
-	{
-		int esc = 0;
-		char camp;
-	    char cbsh = '. ./bashcd.sh';
-        printf("Digite 1 se quer executar os comandos normais e 2 se quser torcar de pasta");
+    //Para receber mensagens dos clientes
+    while((read_size = recv(sock , client_message , 2000 , 0)) > 0 )
+    {
+		client_message[read_size] = '\0';
 		
-		switch (save_sockt)
-		{
-		case 1:
-
-			pthread_mutex_lock(&mutex);
-			//loca os recursos para uso exclusivo do do programa
-        	texto();
-			printf("*********************************************\n");
-			printf("\nExecute seu Comando:\n");
-
-			printf("\nSeu comando foi: ");
-			printf("%s",msg);
-			printf("\n");
+		//Envia mensagem para o cliente
+      	write(sock , client_message , strlen(client_message));
 		
-		//executa o comando no sistema
-			system(msg);
-		
-		//libera os recursos para outra aplicação
-			pthread_mutex_unlock(&mutex);
-			printf("\n");
-		
-			break;
-		
-		default:
-
-			pthread_mutex_lock(&mutex);
-			//loca os recursos para uso exclusivo do do programa
-			system(&cbsh);
-			//chama o arquivo em bash para executar o comando cd
-			pthread_mutex_unlock(&mutex);
-			//libera os recursos para outra aplicação
-			break;
-			
-		}
-	}
-
-}
-
-void texto()
-{
-		//texto de apresentação do sistema
-		printf("Trabalho Arq_Sis_Op\n");
- 		printf("Comandos executados:\n");
- 		printf("1- criar (sub)diretório / mkdir -p\n");
- 		printf("2- remover (sub)diretório / rm -rf\n");
- 		printf("4- mostrar conteúdo do diretório / ls \n");
- 		printf("5- criar arquivo / nano\n");
- 		printf("6- remover arquivo / rm\n");
- 		printf("7- escrever um sequência de caracteres em um arquivo / vim \n");
- 		printf("8- mostrar conteúdo do arquivo / more\n\n");
-}
+		//Limpa o buffer da mensagem
+		memset(client_message, 0, 2000);
+    }
+     
+    if(read_size == 0)
+    {
+        puts("Cliente foi desconectado");
+        fflush(stdout);
+    }
+    else if(read_size == -1)
+    {
+        perror("receber do cliente falhou");
+    }
+         
+    return 0;
+} 
