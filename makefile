@@ -1,5 +1,3 @@
-all: cliente servidor
-servidor : servidor.c bibliotecas.h
-	gcc -o servidor.c servidor -lpthread
+all: cliente
 cliente : cliente.c bibliotecas.h
-	gcc -o cliente.c cliente -lpthread
+	gcc cliente.c -o cliente -lpthread
