@@ -1,5 +1,10 @@
-#include "bibliotecas.h"	//União das bibliotecas
-
+//TESTE DE Servidor
+/*
+    Para compilar no terminal use:
+    gcc servidor.c -lpthread -o servidor
+    Servidor para Thread
+*/
+#include "bibliotecas.h"						//União das bibliotecas
 
 //Declaração função que usara thread
 void *conecLeitor(void *);
