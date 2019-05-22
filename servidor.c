@@ -84,7 +84,7 @@ void *conecLeitor(void *socket_desc)
     {
 		switch (comandoUser[0])
 		{
-			case 1:
+			case '1':
 				//1- criar (sub)diretório / mkdir -p\n
                 pthread_mutex_lock(&mutex);
                 while(read_size = recv(sock , comandoUser , 1 , 0) > 0 )
@@ -100,7 +100,7 @@ void *conecLeitor(void *socket_desc)
 
                 pthread_mutex_unlock(&mutex);
 				break;
-			case 2:
+			case '2':
 				//2- remover (sub)diretório / rm -rf\n
                 pthread_mutex_lock(&mutex);
                 while(read_size = recv(sock , comandoUser , 1 , 0) > 0 )
@@ -117,7 +117,7 @@ void *conecLeitor(void *socket_desc)
                 pthread_mutex_unlock(&mutex);
 				break;
 
-			case 3:
+			case '3':
 				//3- entrar em (sub)diretório / cd\n
                 pthread_mutex_lock(&mutex);
 				//Chama o arquivo em bash para executar o comando cd

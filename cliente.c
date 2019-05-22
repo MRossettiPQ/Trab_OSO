@@ -12,7 +12,7 @@ int main()
 	{
 	 	int sock_conn, val;
 		struct sockaddr_in client_addr;
-		char fila[256];
+		char fila[500];
 		sock_conn = socket(AF_INET, SOCK_STREAM, 0);
 
 		client_addr.sin_family = AF_INET;
@@ -24,20 +24,25 @@ int main()
 		else
 			printf("Falha ao conectar no servidor !\n");
 
-		read(sock_conn,fila,299);
+		read(sock_conn,fila,499);
 		printf("Mensagem do servidor: %s\n\n",fila);
-		bzero(fila,300);
+		bzero(fila,500);
 
-	while(1) 
+		while(1) 
 		{
-			printf("Mensagem do Servidor: ");
-			bzero(fila,300);
+			printf("Qual comando você deseja: ");
+			bzero(fila,500);
 			scanf("%s", fila);
-	
 			write(sock_conn,fila,strlen(fila));
-			bzero(fila,300);
+			bzero(fila,500);
 
-			read(sock_conn,fila,299);
+			printf("Digite o comando: ");
+			scanf("%s", fila);
+			write(sock_conn,fila,strlen(fila));
+			bzero(fila,500);
+
+
+			read(sock_conn,fila,499);
 			printf("Mensagem do servidor: %s\n\n",fila);
 	
 		}
