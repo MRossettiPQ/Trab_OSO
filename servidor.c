@@ -63,8 +63,12 @@ void *conecLeitor(void *socket_desc)
 {
     int sock = *(int*)socket_desc;
     int read_size;
+	int read_size_2;
+	int comandoUser[1];
     char *message , client_message[2000];
     char cbsh = '. ./bashcd.sh';
+	char *swtcError;
+	swtcError = malloc(sizeof(char)*500);
 
     //Texto de apresentação do sistema enviado ao cliente
     char *funcOp;
@@ -73,57 +77,53 @@ void *conecLeitor(void *socket_desc)
     write(sock , funcOp , strlen(funcOp));
 
     //Para receber mensagens dos clientes
-    while((read_size = recv(sock , client_message , 2000 , 0)) > 0 )
+    while((read_size_2 = recv(sock , comandoUser , 1 , 0)) > 0 )
     {
-		client_message[read_size] = '\0';
-		
-		switch (client_message)
+		switch (comandoUser[0])
 		{
-			case 1:
+			case '1':
 				//1- criar (sub)diretório / mkdir -p\n
-				system(msg);
+				system(client_message);
 				break;
-			case 2:
+			case '2':
 				//2- remover (sub)diretório / rm -rf\n
-				system(msg);
+				system(client_message);
 				break;
 
-			case 3:
+			case '3':
 				//3- entrar em (sub)diretório / cd\n
 
 				//Chama o arquivo em bash para executar o comando cd
 				system(&cbsh);
 				break;
 
-			case 4:
+			case '4':
 				//4- mostrar conteúdo do diretório / ls \n"
-				system(msg);
+				system(client_message);
 				break;
 
-			case 5:
+			case '5':
 				//5- criar arquivo / nano\n
-				system(msg);
+				system(client_message);
 				break;
 
-			case 6:
+			case '6':
 				//6- remover arquivo / rm\n
-				system(msg);
+				system(client_message);
 				break;
 
-			case 7:
+			case '7':
 				//7- escrever um sequência de caracteres em um arquivo / \n
-				system(msg);
+				system(client_message);
 				break;
 			
-			case 8:
+			case '8':
 				//8- mostrar conteúdo do arquivo / more\n\n
-				system(msg);
+				system(client_message);
 				break;
 
 			default:
-				char *swtcError;
-				swtcError = malloc(sizeof(char)*500);
-					swtcError = "Comando invalido\n";
+				swtcError = "Comando invalido\n";
 				write(sock , swtcError , strlen(swtcError));
 				break;
 		}
