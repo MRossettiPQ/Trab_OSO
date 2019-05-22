@@ -13,6 +13,8 @@ int main()
 	 	int sock_conn, val;
 		struct sockaddr_in client_addr;
 		char fila[500];
+		char fila2[5000];
+		int aux = 0;
 		sock_conn = socket(AF_INET, SOCK_STREAM, 0);
 
 		client_addr.sin_family = AF_INET;
@@ -32,20 +34,33 @@ int main()
 		{
 			printf("Qual comando você deseja: ");
 			bzero(fila,500);
-			scanf("%s", fila);
+			scanf("%hhd", fila);
 			write(sock_conn,fila,strlen(fila));
 			bzero(fila,500);
+			aux = fila;
+ 
 
 			printf("Digite o comando: ");
 			scanf("%s", fila);
 			write(sock_conn,fila,strlen(fila));
 			bzero(fila,500);
 
+			if (aux == 7)
+			{
+				
+				printf("Digite o texto: ");
+				scanf("%s", fila2);
+				write(sock_conn,fila2,strlen(fila2));
+				bzero(fila2,5000);
+			
+			}
+
 
 			read(sock_conn,fila,499);
-			printf("Mensagem do servidor: %s\n\n",fila);
+			printf("Mensagem do servidor : %s\n\n",fila);
+			
 	
 		}
-	close(sock_conn);
+	//close(sock_conn);
 	return 0;	
 }
