@@ -81,7 +81,7 @@ void *conecLeitor(void *socket_desc)
     texto =  malloc(sizeof(char)*500);
 
     //Texto de apresentação do sistema enviado ao cliente
-	funcOp = "Trabalho Arq_Sis_Op\n Comandos executados:\n 1- criar (sub)diretório / mkdir -p\n 2- remover (sub)diretório / rm -rf\n 4- mostrar conteúdo do diretório / ls \n 5- criar arquivo / touch\n 6- remover arquivo / rm\n 7- escrever um sequência de caracteres em um arquivo / vim \n8- mostrar conteúdo do arquivo / more\n\n";
+	funcOp = "Trabalho Arq_Sis_Op\n Comandos executados:\n 1- criar (sub)diretório / mkdir -p\n 2- remover (sub)diretório / rm -rf\n3- Entrar arquivo\n 4- mostrar conteúdo do diretório / ls \n 5- criar arquivo / touch\n 6- remover arquivo / rm\n 7- escrever um sequência de caracteres em um arquivo / vim \n8- mostrar conteúdo do arquivo / more\n\n";
     write(sock , funcOp , strlen(funcOp));
 
     //Para receber mensagens dos clientes
@@ -101,7 +101,7 @@ void *conecLeitor(void *socket_desc)
                 cmdApr = "\nComando realizado com sucesso\n";
                 write(sock , cmdApr , strlen(client_message));
                 //Limpa o buffer
-                memset(client_message, 0, 2000);
+                memset(client_message, 0, 500);
 
                 pthread_mutex_unlock(&mutex);
 				break;
@@ -115,7 +115,7 @@ void *conecLeitor(void *socket_desc)
                 cmdApr = "\nComando realizado com sucesso\n";
                 write(sock , cmdApr , strlen(client_message));
                 //Limpa o buffer
-                memset(client_message, 0, 2000);
+                memset(client_message, 0, 500);
 
                 pthread_mutex_unlock(&mutex);
 				break;
@@ -130,7 +130,7 @@ void *conecLeitor(void *socket_desc)
                 cmdApr = "\nComando realizado com sucesso\nAgora você está em ....../";
                 write(sock , cmdApr , strlen(client_message));
                 //Limpa o buffer
-                memset(client_message, 0, 2000);
+                memset(client_message, 0, 500);
                 pthread_mutex_unlock(&mutex);
 				break;
 
@@ -155,7 +155,7 @@ void *conecLeitor(void *socket_desc)
                 cmdApr = "\nComando realizado com sucesso\n";
                 write(sock , cmdApr , strlen(client_message));
                 //Limpa o buffer
-                memset(client_message, 0, 2000);
+                memset(client_message, 0, 500);
 
                 pthread_mutex_unlock(&mutex);
 				break;
@@ -170,7 +170,7 @@ void *conecLeitor(void *socket_desc)
                 cmdApr = "\nComando realizado com sucesso\n";
                 write(sock , cmdApr , strlen(client_message));
                 //Limpa o buffer
-                memset(client_message, 0, 2000);
+                memset(client_message, 0, 500);
 
                 pthread_mutex_unlock(&mutex);
 				break;
@@ -185,7 +185,7 @@ void *conecLeitor(void *socket_desc)
                 cmdApr = "\nComando realizado com sucesso\n";
                 write(sock , cmdApr , strlen(client_message));
                 //Limpa o buffer
-                memset(client_message, 0, 2000);
+                memset(client_message, 0, 500);
 
                 pthread_mutex_unlock(&mutex);
 				break;
@@ -211,7 +211,7 @@ void *conecLeitor(void *socket_desc)
                 cmdApr = "\nComando realizado com sucesso\n";
                 write(sock , cmdApr , strlen(client_message));
                 //Limpa o buffer
-                memset(client_message, 0, 2000);
+                memset(client_message, 0, 500);
                 pthread_mutex_unlock(&mutex);
 				break;
 			
@@ -239,7 +239,7 @@ void *conecLeitor(void *socket_desc)
                 cmdApr = "\nComando realizado com sucesso\n";
                 write(sock , cmdApr , strlen(client_message));
                 //Limpa o buffer
-                memset(client_message, 0, 2000);
+                memset(client_message, 0, 500);
                 pthread_mutex_unlock(&mutex);
 				break;
 
@@ -252,12 +252,12 @@ void *conecLeitor(void *socket_desc)
       	//write(sock , client_message , strlen(client_message));
 		
 		//Limpa o buffer da mensagem
-		memset(client_message, 0, 2000);
-        free(swtcError);
+		//memset(client_message, 0, 2000);
+        /*free(swtcError);
         free(cmdApr);
         free(cmdCC);
         free(funcOp);
-        free(texto);
+        free(texto);*/
     }
      
     if(read_size == 0)

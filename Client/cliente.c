@@ -37,7 +37,14 @@ int main()
 			write(sock_conn, fila, strlen(fila));
 			bzero(fila,500);
 
-			if(aux == '4')
+			if ((aux == '1') && (aux == '2') && (aux == '3'))
+			{
+				printf("Digite o nome da pasta: ");
+				scanf("%s", fila);
+				write(sock_conn,fila,strlen(fila));
+				bzero(fila,500);
+			}
+			else if(aux == '4')
 			{
 				read(sock_conn,fila,499);
 				printf("Arquivos da pasta: \n%s\n\n",fila);

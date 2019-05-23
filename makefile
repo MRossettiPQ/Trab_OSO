@@ -1,3 +1,2 @@
-all: cliente
-cliente : cliente.c bibliotecas.h
+cliente : cliente.c
 	gcc cliente.c -o cliente -lpthread
